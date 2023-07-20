@@ -1,5 +1,7 @@
 package com.fivesysdev.standwithukraine.mvp;
 
+import android.util.Log;
+
 public class StatisticPresenter implements Contract.Presenter{
 
     private Contract.View view;
@@ -10,12 +12,17 @@ public class StatisticPresenter implements Contract.Presenter{
     }
     @Override
     public void onPreviousButtonClick() {
-        model.getPreviousDayStatistic();
+        view.setDayStatistic(model.getPreviousDayStatistic());
     }
 
     @Override
     public void onNextButtonClick() {
-    model.getNextDayStatistic();
+        view.setDayStatistic(model.getNextDayStatistic());
+    }
+
+    @Override
+    public String getDate() {
+        return model.getDate();
     }
 
     @Override

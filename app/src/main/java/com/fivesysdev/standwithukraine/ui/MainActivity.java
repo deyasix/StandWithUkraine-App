@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.fivesysdev.standwithukraine.data.DayStatistic;
 import com.fivesysdev.standwithukraine.databinding.ActivityMainBinding;
 import com.fivesysdev.standwithukraine.mvp.Contract;
 import com.fivesysdev.standwithukraine.mvp.StatisticModel;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         presenter = new StatisticPresenter(this, new StatisticModel());
+        binding.textViewDate.setText(presenter.getDate());
         setListeners();
     }
 
@@ -30,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
     }
 
     @Override
-    public void setDayStatistic(StatisticModel statistic) {
-
+    public void setDayStatistic(DayStatistic statistic) {
+        binding.textViewDate.setText(statistic.getDate());
     }
 }
