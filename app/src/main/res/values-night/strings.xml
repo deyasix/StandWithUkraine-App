@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">StandWithUkraine App</string>
     <string name="activity_main_title">The total losses of the russian occupier</string>
     <string name="activity_main_date_selector_label">As for</string>
     <string name="activity_main_symbol_back"><![CDATA[<]]></string>
