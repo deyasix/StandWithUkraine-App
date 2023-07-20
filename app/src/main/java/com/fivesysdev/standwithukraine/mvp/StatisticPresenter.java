@@ -10,12 +10,12 @@ public class StatisticPresenter implements Contract.Presenter{
     }
     @Override
     public void onPreviousButtonClick() {
-
+        model.getPreviousDayStatistic();
     }
 
     @Override
     public void onNextButtonClick() {
-
+    model.getNextDayStatistic();
     }
 
     @Override

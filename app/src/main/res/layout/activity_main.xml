@@ -52,17 +52,20 @@
             android:padding="16dp"
             />
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonPrevious"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:text="@string/activity_main_symbol_back"
             />
         <TextView
+            android:id="@+id/textViewDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="20 July 2023"
             android:padding="16dp"
             />
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonNext"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:text="@string/activity_main_symbol_next"/>
