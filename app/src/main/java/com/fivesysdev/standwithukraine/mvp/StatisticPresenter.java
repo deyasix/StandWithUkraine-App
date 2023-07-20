@@ -1,5 +1,7 @@
 package com.fivesysdev.standwithukraine.mvp;
 
+import com.fivesysdev.standwithukraine.data.DayStatistic;
+
 public class StatisticPresenter implements Contract.Presenter{
 
     private Contract.View view;
@@ -19,9 +21,10 @@ public class StatisticPresenter implements Contract.Presenter{
     }
 
     @Override
-    public String getDate() {
-        return model.getDate();
+    public DayStatistic getDayStatistic() {
+        return model.getCurrentDayStatistic();
     }
+
 
     @Override
     public void onDestroy() {

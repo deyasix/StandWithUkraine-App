@@ -11,8 +11,6 @@ import com.fivesysdev.standwithukraine.mvp.Contract;
 import com.fivesysdev.standwithukraine.mvp.StatisticModel;
 import com.fivesysdev.standwithukraine.mvp.StatisticPresenter;
 
-import java.util.Arrays;
-
 public class MainActivity extends AppCompatActivity implements Contract.View {
 
     private ActivityMainBinding binding;
@@ -25,14 +23,20 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         presenter = new StatisticPresenter(this, new StatisticModel());
-        binding.textViewDate.setText(presenter.getDate());
         setListeners();
+        setRecyclerView();
     }
 
     private void setListeners() {
         binding.buttonPrevious.setOnClickListener(v -> presenter.onPreviousButtonClick());
         binding.buttonNext.setOnClickListener(v -> presenter.onNextButtonClick());
+    }
+
+    private void setRecyclerView() {
+        DayStatistic currentDayStatistic = presenter.getDayStatistic();
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.textViewDate.setText(currentDayStatistic.getDate());
+        binding.recyclerView.setAdapter(new StatisticAdapter(currentDayStatistic.getStatistic()));
     }
 
     @Override

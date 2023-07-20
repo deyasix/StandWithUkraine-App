@@ -9,13 +9,13 @@ public interface Contract {
     interface Model {
         DayStatistic getNextDayStatistic();
         DayStatistic getPreviousDayStatistic();
-        String getDate();
+        DayStatistic getCurrentDayStatistic();
 
     }
     interface Presenter {
         void onPreviousButtonClick();
         void onNextButtonClick();
-        String getDate();
+        DayStatistic getDayStatistic();
         void onDestroy();
     }
 }

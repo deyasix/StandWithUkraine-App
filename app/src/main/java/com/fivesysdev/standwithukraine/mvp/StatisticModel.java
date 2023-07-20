@@ -33,6 +33,11 @@ public class StatisticModel implements Contract.Model {
         return currentStatistic;
     }
 
+    @Override
+    public DayStatistic getCurrentDayStatistic() {
+        return currentStatistic;
+    }
+
     public void setCurrentStatistic() {
         DayStatistic foundStatic = statisticRepository.findByDate(String.valueOf(date));
         if (foundStatic != null) {
@@ -40,8 +45,4 @@ public class StatisticModel implements Contract.Model {
         }
     }
 
-    @Override
-    public String getDate() {
-        return String.valueOf(date);
-    }
 }

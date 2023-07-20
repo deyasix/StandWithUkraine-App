@@ -3,7 +3,7 @@ package com.fivesysdev.standwithukraine.data;
 import java.util.Arrays;
 import java.util.List;
 
-public class StatisticRepository implements Repository<DayStatistic>{
+public final class StatisticRepository implements Repository<DayStatistic>{
 
     List<DayStatistic> statistics;
 
