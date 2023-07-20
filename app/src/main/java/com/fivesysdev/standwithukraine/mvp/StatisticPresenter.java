@@ -1,7 +1,5 @@
 package com.fivesysdev.standwithukraine.mvp;
 
-import android.util.Log;
-
 public class StatisticPresenter implements Contract.Presenter{
 
     private Contract.View view;

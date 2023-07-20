@@ -1,7 +1,5 @@
 package com.fivesysdev.standwithukraine.mvp;
 
-import android.util.Log;
-
 import com.fivesysdev.standwithukraine.data.DayStatistic;
 import com.fivesysdev.standwithukraine.data.StatisticRepository;
 
@@ -9,7 +7,7 @@ import java.time.LocalDate;
 
 public class StatisticModel implements Contract.Model {
 
-    private StatisticRepository statisticRepository;
+    private final StatisticRepository statisticRepository;
     private DayStatistic currentStatistic;
     private LocalDate date;
 
@@ -21,8 +19,10 @@ public class StatisticModel implements Contract.Model {
 
     @Override
     public DayStatistic getNextDayStatistic() {
-        date = date.plusDays(1);
-        setCurrentStatistic();
+        if (!date.isEqual(LocalDate.now())) {
+            date = date.plusDays(1);
+            setCurrentStatistic();
+        }
         return currentStatistic;
     }
 
@@ -34,7 +34,10 @@ public class StatisticModel implements Contract.Model {
     }
 
     public void setCurrentStatistic() {
-        currentStatistic = statisticRepository.findByDate(String.valueOf(date));
+        DayStatistic foundStatic = statisticRepository.findByDate(String.valueOf(date));
+        if (foundStatic != null) {
+            currentStatistic = foundStatic;
+        }
     }
 
     @Override
