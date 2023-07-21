@@ -1,16 +1,17 @@
 package com.fivesysdev.standwithukraine.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.fivesysdev.standwithukraine.data.DayStatistic;
 import com.fivesysdev.standwithukraine.databinding.ActivityMainBinding;
 import com.fivesysdev.standwithukraine.mvp.Contract;
 import com.fivesysdev.standwithukraine.mvp.StatisticModel;
 import com.fivesysdev.standwithukraine.mvp.StatisticPresenter;
+
 
 public class MainActivity extends AppCompatActivity implements Contract.View {
 
@@ -26,6 +27,18 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
         presenter = new StatisticPresenter(this, new StatisticModel());
         setListeners();
         setRecyclerView();
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("date", presenter.getDayStatistic().getDate());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        presenter.setDate(savedInstanceState.getString("date"));
     }
 
     private void setListeners() {

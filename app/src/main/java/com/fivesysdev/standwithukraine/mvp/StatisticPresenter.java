@@ -1,10 +1,11 @@
 package com.fivesysdev.standwithukraine.mvp;
 
+
 import com.fivesysdev.standwithukraine.data.DayStatistic;
 
 import java.time.LocalDate;
 
-public class StatisticPresenter implements Contract.Presenter{
+public class StatisticPresenter implements Contract.Presenter {
 
     private Contract.View view;
     private Contract.Model model;
@@ -16,7 +17,7 @@ public class StatisticPresenter implements Contract.Presenter{
     @Override
     public void onPreviousButtonClick() {
         view.setDayStatistic(model.getPreviousDayStatistic());
-        view.blockingNextButton(false);
+        checkDateForNextButton();
     }
 
     @Override
@@ -36,8 +37,13 @@ public class StatisticPresenter implements Contract.Presenter{
     }
 
     private void checkDateForNextButton() {
-        if (model.getDate().equals(LocalDate.now())) {
-            view.blockingNextButton(true);
-        }
+        view.blockingNextButton(model.getDate().equals(LocalDate.now()));
+    }
+
+    @Override
+    public void setDate(String date) {
+        model.setDate(date);
+        view.setDayStatistic(model.getCurrentDayStatistic());
+        checkDateForNextButton();
     }
 }

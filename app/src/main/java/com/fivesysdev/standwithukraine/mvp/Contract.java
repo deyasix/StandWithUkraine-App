@@ -14,6 +14,7 @@ public interface Contract {
         DayStatistic getPreviousDayStatistic();
         DayStatistic getCurrentDayStatistic();
         LocalDate getDate();
+        void setDate(String date);
 
     }
     interface Presenter {
@@ -21,5 +22,6 @@ public interface Contract {
         void onNextButtonClick();
         DayStatistic getDayStatistic();
         void onDestroy();
+        void setDate(String date);
     }
 }
