@@ -1,16 +1,33 @@
 package com.fivesysdev.standwithukraine.data;
 
-import java.util.Arrays;
+import android.util.Log;
+
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 public final class StatisticRepository implements Repository<DayStatistic>{
 
     List<DayStatistic> statistics;
 
     public StatisticRepository() {
-        statistics = Arrays.asList(
-            new DayStatistic("2023-07-20", Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14)),
-                new DayStatistic("2023-07-19", Arrays.asList(5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18)));
+        Callable<List<DayStatistic>> task = () -> {
+            Client client = new Client();
+            try {
+                return client.getStatistics();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        };
+        FutureTask<List<DayStatistic>> future = new FutureTask<>(task);
+        new Thread(future).start();
+        try {
+            statistics = future.get();
+        } catch (InterruptedException | ExecutionException exception) {
+            Log.d("REP", "Interrupted|ExecutionException");
+        }
     }
 
     @Override
