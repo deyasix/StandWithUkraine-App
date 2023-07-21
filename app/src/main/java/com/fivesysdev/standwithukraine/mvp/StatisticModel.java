@@ -19,10 +19,8 @@ public class StatisticModel implements Contract.Model {
 
     @Override
     public DayStatistic getNextDayStatistic() {
-        if (!date.isEqual(LocalDate.now())) {
-            date = date.plusDays(1);
-            setCurrentStatistic();
-        }
+        date = date.plusDays(1);
+        setCurrentStatistic();
         return currentStatistic;
     }
 
@@ -45,4 +43,8 @@ public class StatisticModel implements Contract.Model {
         }
     }
 
+    @Override
+    public LocalDate getDate() {
+        return date;
+    }
 }

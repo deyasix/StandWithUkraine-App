@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.fivesysdev.standwithukraine.data.DayStatistic;
 import com.fivesysdev.standwithukraine.databinding.ActivityMainBinding;
@@ -43,5 +44,10 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
     public void setDayStatistic(DayStatistic statistic) {
         binding.textViewDate.setText(statistic.getDate());
         binding.recyclerView.setAdapter(new StatisticAdapter(statistic.getStatistic()));
+    }
+
+    @Override
+    public void blockingNextButton(boolean isBlocked) {
+        binding.buttonNext.setEnabled(!isBlocked);
     }
 }

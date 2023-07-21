@@ -9,9 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.fivesysdev.standwithukraine.databinding.StatisticItemBinding;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.ViewHolder> {
