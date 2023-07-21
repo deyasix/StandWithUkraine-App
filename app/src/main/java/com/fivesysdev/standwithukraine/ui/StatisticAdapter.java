@@ -1,6 +1,7 @@
 package com.fivesysdev.standwithukraine.ui;
 
 
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -10,11 +11,12 @@ import com.fivesysdev.standwithukraine.databinding.StatisticItemBinding;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.ViewHolder> {
 
-    private List<Integer> quantities;
+    private List<Pair<Integer, Integer>> quantities;
     private List<String> names = Arrays.asList("personnel units", "tanks", "AFV", "artillery systems", "MLRS",
             "AA warfare systems", "planes", "helicopters", "vehicles and fuel tanks",
             "warships/cutters", "UAV systems", "special military equip", "ATGM/SRBM systems",
@@ -49,7 +51,7 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.View
      * @param dataSet String[] containing the data to populate views to be used
      * by RecyclerView
      */
-    public StatisticAdapter(List<Integer> dataSet) {
+    public StatisticAdapter(List<Pair<Integer, Integer>> dataSet) {
         quantities = dataSet;
     }
 
@@ -61,8 +63,11 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        viewHolder.getTextViewQuantity().setText(String.valueOf(quantities.get(position)));
-        viewHolder.getTextViewName().setText(names.get(position) + ": ");
+        Pair<Integer, Integer> item = quantities.get(position);
+        String text = item.first + " (+" + item.second + ")";
+        String name = names.get(position) + ": ";
+        viewHolder.getTextViewQuantity().setText(text);
+        viewHolder.getTextViewName().setText(name);
     }
 
     @Override

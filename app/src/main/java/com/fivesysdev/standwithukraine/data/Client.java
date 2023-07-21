@@ -1,5 +1,7 @@
 package com.fivesysdev.standwithukraine.data;
 
+import android.util.Pair;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,11 +36,13 @@ public class Client {
                 for (int i = 0; i < days.length(); i++) {
                     String date = new JSONObject(days.get(i).toString()).getString("date");
                     JSONObject dayStats = days.getJSONObject(i).getJSONObject("stats");
+                    JSONObject increaseStats = days.getJSONObject(i).getJSONObject("increase");
                     JSONArray names = dayStats.names();
-                    ArrayList<Integer> dayStatistics = new ArrayList<>();
+                    ArrayList<Pair<Integer, Integer>> dayStatistics = new ArrayList<>();
                     for (int j = 0; j < names.length(); j++) {
-                        Integer quantity = dayStats.getInt(names.getString(j));
-                        dayStatistics.add(quantity);
+                        int quantity = dayStats.getInt(names.getString(j));
+                        int increaseQuantity = increaseStats.getInt(names.getString(j));
+                        dayStatistics.add(new Pair<>(quantity, increaseQuantity));
                     }
                     fetchedStatistics.add(new DayStatistic(date, dayStatistics));
                 }
