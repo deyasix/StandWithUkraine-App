@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.fivesysdev.standwithukraine.databinding.StatisticItemBinding;
 
 import java.util.Arrays;
@@ -14,16 +15,13 @@ import java.util.List;
 
 public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.ViewHolder> {
 
-    private List<Pair<Integer, Integer>> quantities;
-    private List<String> names = Arrays.asList("personnel units", "tanks", "AFV", "artillery systems", "MLRS",
-            "AA warfare systems", "planes", "helicopters", "vehicles and fuel tanks",
-            "warships/cutters", "UAV systems", "special military equip", "ATGM/SRBM systems",
-            "cruise missiles");
+    private final List<Pair<Integer, Integer>> quantities;
 
-    /**
-     * Provide a reference to the type of views that you are using
-     * (custom ViewHolder)
-     */
+    private final List<String> names = Arrays.asList(
+            "personnel units", "tanks", "AFV", "artillery systems", "MLRS", "AA warfare systems",
+            "planes", "helicopters", "vehicles and fuel tanks", "warships/cutters", "cruise missiles",
+            "UAV systems", "special military equip", "ATGM/SRBM systems");
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textViewName;
         private final TextView textViewQuantity;
@@ -43,16 +41,11 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.View
         }
     }
 
-    /**
-     * Initialize the dataset of the Adapter
-     *
-     * @param dataSet String[] containing the data to populate views to be used
-     * by RecyclerView
-     */
     public StatisticAdapter(List<Pair<Integer, Integer>> dataSet) {
         quantities = dataSet;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         StatisticItemBinding binding = StatisticItemBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false);

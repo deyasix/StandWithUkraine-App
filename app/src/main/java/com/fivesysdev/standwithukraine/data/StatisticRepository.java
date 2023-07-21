@@ -35,7 +35,7 @@ public final class StatisticRepository implements Repository<DayStatistic>{
         FutureTask<List<DayStatistic>> future = new FutureTask<>(task);
         new Thread(future).start();
         try {
-            statistics.addAll(future.get());
+            addAll(future.get());
         } catch (InterruptedException | ExecutionException exception) {
             Log.d("REP", "Interrupted|ExecutionException");
         }
@@ -63,6 +63,14 @@ public final class StatisticRepository implements Repository<DayStatistic>{
             }
         }
         return null;
+    }
+
+    private void addAll(List<DayStatistic> list) {
+        for (DayStatistic item: list) {
+            if (statistics.stream().noneMatch(element -> element.isEqual(item))) {
+                statistics.add(item);
+            }
+        }
     }
 
 }

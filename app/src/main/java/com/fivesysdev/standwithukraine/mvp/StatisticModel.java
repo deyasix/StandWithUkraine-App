@@ -1,6 +1,5 @@
 package com.fivesysdev.standwithukraine.mvp;
 
-import android.util.Log;
 
 import com.fivesysdev.standwithukraine.data.DayStatistic;
 import com.fivesysdev.standwithukraine.data.StatisticRepository;
@@ -43,8 +42,6 @@ public class StatisticModel implements Contract.Model {
         if (foundStatic != null) {
             currentStatistic = foundStatic;
         }
-        Log.d("SET1", currentStatistic.getDate());
-        Log.d("SET2", date.toString());
     }
 
     @Override

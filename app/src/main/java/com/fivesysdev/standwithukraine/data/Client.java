@@ -19,10 +19,11 @@ import okhttp3.ResponseBody;
 public class Client {
 
     private final OkHttpClient httpClient = new OkHttpClient();
+    private static final String URL = "https://russianwarship.rip/api/v2";
 
-    public List<DayStatistic> getStatisticsFromDate(String date) throws IOException {
-        ArrayList<DayStatistic> fetchedStatistics = new ArrayList<>();
-        HttpUrl.Builder httpBuilder = HttpUrl.parse("https://russianwarship.rip/api/v2" + "/statistics").newBuilder();
+    public List<DayStatistic> getStatisticsFromDate(String date) throws IOException, JSONException {
+        List<DayStatistic> fetchedStatistics = new ArrayList<>();
+        HttpUrl.Builder httpBuilder = HttpUrl.parse(URL + "/statistics").newBuilder();
         httpBuilder.addQueryParameter("date_from", date);
         Request request = new Request.Builder()
                 .url(httpBuilder.build())
@@ -30,28 +31,31 @@ public class Client {
         try (Response response = httpClient.newCall(request).execute()) {
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
             try (ResponseBody responseBody = response.body()) {
-                JSONArray days = new JSONObject(responseBody.string())
-                        .getJSONObject("data")
-                        .getJSONArray("records");
-                for (int i = 0; i < days.length(); i++) {
-                    String dayDate = new JSONObject(days.get(i).toString()).getString("date");
-                    JSONObject dayStats = days.getJSONObject(i).getJSONObject("stats");
-                    JSONObject increaseStats = days.getJSONObject(i).getJSONObject("increase");
-                    JSONArray names = dayStats.names();
-                    ArrayList<Pair<Integer, Integer>> dayStatistics = new ArrayList<>();
-                    for (int j = 0; j < names.length(); j++) {
-                        int quantity = dayStats.getInt(names.getString(j));
-                        int increaseQuantity = increaseStats.getInt(names.getString(j));
-                        dayStatistics.add(new Pair<>(quantity, increaseQuantity));
-                    }
-                    fetchedStatistics.add(new DayStatistic(dayDate, dayStatistics));
-                }
+                if (responseBody != null) fetchedStatistics = putStatisticsToList(responseBody);
             }
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
         }
         return fetchedStatistics;
+    }
 
+    private List<DayStatistic> putStatisticsToList(ResponseBody body) throws IOException, JSONException {
+        ArrayList<DayStatistic> fetchedStatistics = new ArrayList<>();
+        JSONArray days = new JSONObject(body.string())
+                .getJSONObject("data")
+                .getJSONArray("records");
+        for (int i = 0; i < days.length(); i++) {
+            String dayDate = new JSONObject(days.get(i).toString()).getString("date");
+            JSONObject dayStats = days.getJSONObject(i).getJSONObject("stats");
+            JSONObject increaseStats = days.getJSONObject(i).getJSONObject("increase");
+            JSONArray names = dayStats.names();
+            ArrayList<Pair<Integer, Integer>> dayStatistics = new ArrayList<>();
+            for (int j = 0; j < names.length(); j++) {
+                int quantity = dayStats.getInt(names.getString(j));
+                int increaseQuantity = increaseStats.getInt(names.getString(j));
+                dayStatistics.add(new Pair<>(quantity, increaseQuantity));
+            }
+            fetchedStatistics.add(new DayStatistic(dayDate, dayStatistics));
+        }
+        return fetchedStatistics;
     }
 
 }

@@ -59,8 +59,10 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
             binding.recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         }
         binding.recyclerView.setAdapter(new StatisticAdapter(currentDayStatistic.getStatistic()));
-        DividerItemDecoration verticalDivider = new DividerItemDecoration(binding.recyclerView.getContext(), OrientationHelper.VERTICAL);
-        DividerItemDecoration horizontalDivider = new DividerItemDecoration(binding.recyclerView.getContext(), OrientationHelper.HORIZONTAL);
+        DividerItemDecoration verticalDivider = new DividerItemDecoration(binding.recyclerView.getContext(),
+                OrientationHelper.VERTICAL);
+        DividerItemDecoration horizontalDivider = new DividerItemDecoration(binding.recyclerView.getContext(),
+                OrientationHelper.HORIZONTAL);
         binding.recyclerView.addItemDecoration(verticalDivider);
         binding.recyclerView.addItemDecoration(horizontalDivider);
     }
