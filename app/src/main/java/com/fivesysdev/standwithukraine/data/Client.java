@@ -20,10 +20,10 @@ public class Client {
 
     private final OkHttpClient httpClient = new OkHttpClient();
 
-    public List<DayStatistic> getStatistics() throws IOException {
+    public List<DayStatistic> getStatisticsFromDate(String date) throws IOException {
         ArrayList<DayStatistic> fetchedStatistics = new ArrayList<>();
         HttpUrl.Builder httpBuilder = HttpUrl.parse("https://russianwarship.rip/api/v2" + "/statistics").newBuilder();
-        httpBuilder.addQueryParameter("date_from", "2023-07-01");
+        httpBuilder.addQueryParameter("date_from", date);
         Request request = new Request.Builder()
                 .url(httpBuilder.build())
                 .build();
@@ -34,7 +34,7 @@ public class Client {
                         .getJSONObject("data")
                         .getJSONArray("records");
                 for (int i = 0; i < days.length(); i++) {
-                    String date = new JSONObject(days.get(i).toString()).getString("date");
+                    String dayDate = new JSONObject(days.get(i).toString()).getString("date");
                     JSONObject dayStats = days.getJSONObject(i).getJSONObject("stats");
                     JSONObject increaseStats = days.getJSONObject(i).getJSONObject("increase");
                     JSONArray names = dayStats.names();
@@ -44,7 +44,7 @@ public class Client {
                         int increaseQuantity = increaseStats.getInt(names.getString(j));
                         dayStatistics.add(new Pair<>(quantity, increaseQuantity));
                     }
-                    fetchedStatistics.add(new DayStatistic(date, dayStatistics));
+                    fetchedStatistics.add(new DayStatistic(dayDate, dayStatistics));
                 }
             }
         } catch (JSONException e) {

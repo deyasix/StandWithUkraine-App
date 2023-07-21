@@ -4,6 +4,7 @@ import android.util.Pair;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class DayStatistic {
     private String date;
@@ -27,5 +28,9 @@ public class DayStatistic {
 
     public void setStatistic(List<Pair<Integer, Integer>> statistic) {
         this.statistic = statistic;
+    }
+
+    public boolean isEqual(DayStatistic dayStatistic) {
+        return Objects.equals(this.date, dayStatistic.date);
     }
 }
