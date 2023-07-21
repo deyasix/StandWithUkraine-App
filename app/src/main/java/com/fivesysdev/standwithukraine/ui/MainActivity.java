@@ -2,8 +2,11 @@ package com.fivesysdev.standwithukraine.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.OrientationHelper;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import com.fivesysdev.standwithukraine.data.DayStatistic;
@@ -48,9 +51,18 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
 
     private void setRecyclerView() {
         DayStatistic currentDayStatistic = presenter.getDayStatistic();
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.textViewDate.setText(currentDayStatistic.getDate());
+        int orientation = this.getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            binding.recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        } else {
+            binding.recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        }
         binding.recyclerView.setAdapter(new StatisticAdapter(currentDayStatistic.getStatistic()));
+        DividerItemDecoration verticalDivider = new DividerItemDecoration(binding.recyclerView.getContext(), OrientationHelper.VERTICAL);
+        DividerItemDecoration horizontalDivider = new DividerItemDecoration(binding.recyclerView.getContext(), OrientationHelper.HORIZONTAL);
+        binding.recyclerView.addItemDecoration(verticalDivider);
+        binding.recyclerView.addItemDecoration(horizontalDivider);
     }
 
     @Override

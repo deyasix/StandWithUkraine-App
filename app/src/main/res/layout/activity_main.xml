@@ -4,20 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
     tools:context=".ui.MainActivity">
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideLineLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.04"
+        app:layout_constraintGuide_percent="0.08"
         />
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideLineRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.96"
+        app:layout_constraintGuide_percent="0.92"
         />
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideLineTop"
@@ -35,6 +36,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/guideLineTop"
         android:padding="16dp"
+        android:textSize="22sp"
+        android:fontFamily="@font/mitr_regular"
+        android:gravity="center"
         />
     <LinearLayout
         android:id="@+id/linearLayoutDateSelector"
@@ -50,11 +54,13 @@
             android:layout_height="wrap_content"
             android:text="@string/activity_main_date_selector_label"
             android:padding="16dp"
+            android:fontFamily="@font/mitr_regular"
             />
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonPrevious"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:text="@string/activity_main_symbol_back"
             />
         <TextView
@@ -63,11 +69,13 @@
             android:layout_height="wrap_content"
             android:text=""
             android:padding="16dp"
+            android:fontFamily="@font/mitr_regular"
             />
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonNext"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:text="@string/activity_main_symbol_next"/>
     </LinearLayout>
 
@@ -76,10 +84,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:listitem="@layout/statistic_item"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideLineLeft"
         app:layout_constraintTop_toBottomOf="@id/linearLayoutDateSelector"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideLineRight"
         />
 
 
