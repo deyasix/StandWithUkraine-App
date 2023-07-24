@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Activity Main  -->
+    <dimen name="activity_main_text_padding">16dp</dimen>
+    <dimen name="activity_main_title_size">22sp</dimen>
+    <dimen name="activity_main_button_width">40dp</dimen>
+
+    <!--  Statistic Item  -->
+    <dimen name="statistic_item_padding">8dp</dimen>
+    <dimen name="statistic_item_name_text_size">16sp</dimen>
+    <dimen name="statistic_item_number_text_size">18sp</dimen>
+
+    <!--  Statistic Item Empty Data  -->
+    <dimen name="statistic_item_empty_data_text_size">40sp</dimen>
+</resources>

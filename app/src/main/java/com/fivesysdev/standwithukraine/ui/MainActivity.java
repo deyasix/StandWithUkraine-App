@@ -57,23 +57,8 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
     }
 
     private void setRecyclerView() {
-        DayStatistic currentDayStatistic = presenter.getDayStatistic();
-        List<Pair<Integer, Integer>> stats;
-        if (currentDayStatistic == null) {
-            stats = new ArrayList<>();
-            binding.textViewDate.setText(LocalDate.now().toString());
-        } else {
-            binding.textViewDate.setText(currentDayStatistic.getDate());
-            stats = currentDayStatistic.getStatistic();
-        }
-        GridLayoutManager layoutManager;
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            layoutManager = new GridLayoutManager(this, 2);
-        } else {
-            layoutManager = new GridLayoutManager(this, 3);
-        }
-        binding.recyclerView.setLayoutManager(layoutManager);
-        binding.recyclerView.setAdapter(new StatisticAdapter(stats));
+        setLayoutManager();
+        setAdapter();
         setRecyclerDividers();
         setEmptyDataObserver();
     }
@@ -105,5 +90,26 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
         EmptyStatisticDataObserver emptyDataObserver =
                 new EmptyStatisticDataObserver(binding.recyclerView, findViewById(R.id.emptyData));
         Objects.requireNonNull(binding.recyclerView.getAdapter()).registerAdapterDataObserver(emptyDataObserver);
+    }
+    private void setLayoutManager() {
+        GridLayoutManager layoutManager;
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            layoutManager = new GridLayoutManager(this, 2);
+        } else {
+            layoutManager = new GridLayoutManager(this, 3);
+        }
+        binding.recyclerView.setLayoutManager(layoutManager);
+    }
+    private void setAdapter() {
+        DayStatistic currentDayStatistic = presenter.getDayStatistic();
+        List<Pair<Integer, Integer>> stats;
+        if (currentDayStatistic == null) {
+            stats = new ArrayList<>();
+            binding.textViewDate.setText(LocalDate.now().toString());
+        } else {
+            binding.textViewDate.setText(currentDayStatistic.getDate());
+            stats = currentDayStatistic.getStatistic();
+        }
+        binding.recyclerView.setAdapter(new StatisticAdapter(stats));
     }
 }

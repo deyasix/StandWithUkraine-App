@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -23,7 +24,8 @@ public class Client {
 
     public List<DayStatistic> getStatisticsFromDate(String date) throws IOException, JSONException {
         List<DayStatistic> fetchedStatistics = new ArrayList<>();
-        HttpUrl.Builder httpBuilder = HttpUrl.parse(URL + "/statistics").newBuilder();
+        String endpoint = "/statistics";
+        HttpUrl.Builder httpBuilder = Objects.requireNonNull(HttpUrl.parse(URL + endpoint)).newBuilder();
         httpBuilder.addQueryParameter("date_from", date);
         Request request = new Request.Builder()
                 .url(httpBuilder.build())
@@ -48,7 +50,7 @@ public class Client {
             JSONObject increaseStats = days.getJSONObject(i).getJSONObject("increase");
             JSONArray names = dayStats.names();
             ArrayList<Pair<Integer, Integer>> dayStatistics = new ArrayList<>();
-            for (int j = 0; j < names.length(); j++) {
+            for (int j = 0; j < Objects.requireNonNull(names).length(); j++) {
                 int quantity = dayStats.getInt(names.getString(j));
                 int increaseQuantity = increaseStats.getInt(names.getString(j));
                 dayStatistics.add(new Pair<>(quantity, increaseQuantity));
