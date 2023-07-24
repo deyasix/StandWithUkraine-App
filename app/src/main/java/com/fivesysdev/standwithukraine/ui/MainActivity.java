@@ -7,13 +7,20 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.OrientationHelper;
 
 import android.content.res.Configuration;
+import java.time.LocalDate;
 import android.os.Bundle;
+import android.util.Pair;
 
+import com.fivesysdev.standwithukraine.R;
 import com.fivesysdev.standwithukraine.data.DayStatistic;
 import com.fivesysdev.standwithukraine.databinding.ActivityMainBinding;
 import com.fivesysdev.standwithukraine.mvp.Contract;
 import com.fivesysdev.standwithukraine.mvp.StatisticModel;
 import com.fivesysdev.standwithukraine.mvp.StatisticPresenter;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity implements Contract.View {
@@ -35,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("date", presenter.getDayStatistic().getDate());
+        outState.putString("date", binding.textViewDate.getText().toString());
     }
 
     @Override
@@ -51,14 +58,42 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
 
     private void setRecyclerView() {
         DayStatistic currentDayStatistic = presenter.getDayStatistic();
-        binding.textViewDate.setText(currentDayStatistic.getDate());
-        int orientation = this.getResources().getConfiguration().orientation;
-        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            binding.recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        List<Pair<Integer, Integer>> stats;
+        if (currentDayStatistic == null) {
+            stats = new ArrayList<>();
+            binding.textViewDate.setText(LocalDate.now().toString());
         } else {
-            binding.recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+            binding.textViewDate.setText(currentDayStatistic.getDate());
+            stats = currentDayStatistic.getStatistic();
         }
-        binding.recyclerView.setAdapter(new StatisticAdapter(currentDayStatistic.getStatistic()));
+        GridLayoutManager layoutManager;
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            layoutManager = new GridLayoutManager(this, 2);
+        } else {
+            layoutManager = new GridLayoutManager(this, 3);
+        }
+        binding.recyclerView.setLayoutManager(layoutManager);
+        binding.recyclerView.setAdapter(new StatisticAdapter(stats));
+        setRecyclerDividers();
+        setEmptyDataObserver();
+    }
+
+    @Override
+    public void setDayStatistic(DayStatistic statistic) {
+        if (statistic != null) {
+            binding.textViewDate.setText(statistic.getDate());
+            binding.recyclerView.setAdapter(new StatisticAdapter(statistic.getStatistic()));
+        }
+        else binding.textViewDate.setText(LocalDate.now().toString());
+        setEmptyDataObserver();
+    }
+
+    @Override
+    public void blockingNextButton(boolean isBlocked) {
+        binding.buttonNext.setEnabled(!isBlocked);
+    }
+
+    private void setRecyclerDividers() {
         DividerItemDecoration verticalDivider = new DividerItemDecoration(binding.recyclerView.getContext(),
                 OrientationHelper.VERTICAL);
         DividerItemDecoration horizontalDivider = new DividerItemDecoration(binding.recyclerView.getContext(),
@@ -66,15 +101,9 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
         binding.recyclerView.addItemDecoration(verticalDivider);
         binding.recyclerView.addItemDecoration(horizontalDivider);
     }
-
-    @Override
-    public void setDayStatistic(DayStatistic statistic) {
-        binding.textViewDate.setText(statistic.getDate());
-        binding.recyclerView.setAdapter(new StatisticAdapter(statistic.getStatistic()));
-    }
-
-    @Override
-    public void blockingNextButton(boolean isBlocked) {
-        binding.buttonNext.setEnabled(!isBlocked);
+    private void setEmptyDataObserver() {
+        EmptyStatisticDataObserver emptyDataObserver =
+                new EmptyStatisticDataObserver(binding.recyclerView, findViewById(R.id.emptyData));
+        Objects.requireNonNull(binding.recyclerView.getAdapter()).registerAdapterDataObserver(emptyDataObserver);
     }
 }

@@ -7,8 +7,8 @@ import java.time.LocalDate;
 
 public class StatisticPresenter implements Contract.Presenter {
 
-    private Contract.View view;
-    private Contract.Model model;
+    private final Contract.View view;
+    private final Contract.Model model;
     public StatisticPresenter(Contract.View view, Contract.Model model) {
         this.view = view;
         this.model = model;
@@ -31,10 +31,6 @@ public class StatisticPresenter implements Contract.Presenter {
         return model.getCurrentDayStatistic();
     }
 
-
-    @Override
-    public void onDestroy() {
-    }
 
     private void checkDateForNextButton() {
         view.blockingNextButton(model.getDate().equals(LocalDate.now()));

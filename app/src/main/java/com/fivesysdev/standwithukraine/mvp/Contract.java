@@ -21,7 +21,6 @@ public interface Contract {
         void onPreviousButtonClick();
         void onNextButtonClick();
         DayStatistic getDayStatistic();
-        void onDestroy();
         void setDate(String date);
     }
 }

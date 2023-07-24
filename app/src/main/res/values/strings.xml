@@ -4,4 +4,5 @@
     <string name="activity_main_date_selector_label">As for</string>
     <string name="activity_main_symbol_back"><![CDATA[<]]></string>
     <string name="activity_main_symbol_next"><![CDATA[>]]></string>
+    <string name="statistic_item_empty_dataset_text">No stats yet</string>
 </resources>

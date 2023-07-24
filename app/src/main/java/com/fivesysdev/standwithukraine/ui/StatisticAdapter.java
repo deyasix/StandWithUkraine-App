@@ -65,4 +65,5 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.View
     public int getItemCount() {
         return quantities.size();
     }
+
 }
