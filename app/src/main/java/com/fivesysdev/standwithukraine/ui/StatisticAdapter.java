@@ -28,8 +28,8 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.View
 
         public ViewHolder(StatisticItemBinding binding) {
             super(binding.getRoot());
-            textViewName = binding.textViewName;
-            textViewQuantity = binding.textViewQuantity;
+            textViewName = binding.tvName;
+            textViewQuantity = binding.tvQuantity;
         }
 
         public TextView getTextViewName() {

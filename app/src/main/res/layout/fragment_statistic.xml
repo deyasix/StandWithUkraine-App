@@ -7,96 +7,96 @@
     android:background="@drawable/background_gradient"
     tools:context=".ui.MainActivity">
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideLineLeft"
+        android:id="@+id/guideline_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.04"
         />
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideLineRight"
+        android:id="@+id/guideline_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.96"
         />
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideLineTop"
+        android:id="@+id/guideline_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.02"
         />
     <TextView
-        android:id="@+id/textViewTitle"
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/activity_main_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guideLineTop"
-        android:padding="@dimen/activity_main_text_padding"
-        android:textSize="@dimen/activity_main_title_size"
+        app:layout_constraintTop_toTopOf="@id/guideline_top"
+        android:padding="@dimen/padding_activity_main_text"
+        android:textSize="@dimen/textsize_activity_main_title"
         android:fontFamily="@font/mitr_regular"
         android:gravity="center"
         />
     <LinearLayout
-        android:id="@+id/linearLayoutDateSelector"
+        android:id="@+id/ll_date_selector"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/guideLineLeft"
-        app:layout_constraintTop_toBottomOf="@id/textViewTitle"
-        app:layout_constraintEnd_toEndOf="@id/guideLineRight"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:layout_constraintEnd_toEndOf="@id/guideline_right"
         android:gravity="center"
         >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/activity_main_date_selector_label"
-            android:padding="@dimen/activity_main_text_padding"
+            android:padding="@dimen/padding_activity_main_text"
             android:fontFamily="@font/mitr_regular"
             />
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonPrevious"
-            android:layout_width="@dimen/activity_main_button_width"
+            android:id="@+id/btn_previous"
+            android:layout_width="@dimen/width_activity_main_button"
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:text="@string/activity_main_symbol_back"
             />
         <TextView
-            android:id="@+id/textViewDate"
+            android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/activity_main_text_padding"
+            android:padding="@dimen/padding_activity_main_text"
             android:fontFamily="@font/mitr_regular"
             />
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonNext"
-            android:layout_width="@dimen/activity_main_button_width"
+            android:id="@+id/btn_next"
+            android:layout_width="@dimen/width_activity_main_button"
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:text="@string/activity_main_symbol_next"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/recyclerview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         tools:listitem="@layout/statistic_item"
-        app:layout_constraintStart_toStartOf="@id/guideLineLeft"
-        app:layout_constraintTop_toBottomOf="@id/linearLayoutDateSelector"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@id/ll_date_selector"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/guideLineRight"
+        app:layout_constraintEnd_toEndOf="@id/guideline_right"
         />
     <include
-        android:id="@+id/emptyData"
+        android:id="@+id/emptydata"
         layout="@layout/statistic_item_empty_dataset"
         android:layout_width="match_parent"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/guideLineLeft"
-        app:layout_constraintEnd_toEndOf="@id/guideLineRight"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutDateSelector"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintEnd_toEndOf="@id/guideline_right"
+        app:layout_constraintTop_toBottomOf="@+id/ll_date_selector"
         android:layout_height="0dp"
         android:layout_gravity="center" />
 

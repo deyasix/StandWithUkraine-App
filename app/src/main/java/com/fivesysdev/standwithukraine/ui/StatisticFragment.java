@@ -57,12 +57,12 @@ public class StatisticFragment extends Fragment implements Contract.View {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("date", binding.textViewDate.getText().toString());
+        outState.putString("date", binding.tvDate.getText().toString());
     }
 
     private void setListeners() {
-        binding.buttonPrevious.setOnClickListener(v -> presenter.onPreviousButtonClick());
-        binding.buttonNext.setOnClickListener(v -> presenter.onNextButtonClick());
+        binding.btnPrevious.setOnClickListener(v -> presenter.onPreviousButtonClick());
+        binding.btnNext.setOnClickListener(v -> presenter.onNextButtonClick());
     }
 
     private void setRecyclerView() {
@@ -75,16 +75,16 @@ public class StatisticFragment extends Fragment implements Contract.View {
     @Override
     public void setDayStatistic(DayStatistic statistic) {
         if (statistic != null) {
-            binding.textViewDate.setText(statistic.getDate());
-            binding.recyclerView.setAdapter(new StatisticAdapter(statistic.getStatistic()));
+            binding.tvDate.setText(statistic.getDate());
+            binding.recyclerview.setAdapter(new StatisticAdapter(statistic.getStatistic()));
         }
-        else binding.textViewDate.setText(LocalDate.now().toString());
+        else binding.tvDate.setText(LocalDate.now().toString());
         setEmptyDataObserver();
     }
 
     @Override
     public void blockingNextButton(boolean isBlocked) {
-        binding.buttonNext.setEnabled(!isBlocked);
+        binding.btnNext.setEnabled(!isBlocked);
     }
 
     private void setRecyclerDividers() {
@@ -92,13 +92,13 @@ public class StatisticFragment extends Fragment implements Contract.View {
                 OrientationHelper.VERTICAL);
         DividerItemDecoration verticalDivider = new DividerItemDecoration(requireContext(),
                 OrientationHelper.HORIZONTAL);
-        binding.recyclerView.addItemDecoration(verticalDivider);
-        binding.recyclerView.addItemDecoration(horizontalDivider);
+        binding.recyclerview.addItemDecoration(verticalDivider);
+        binding.recyclerview.addItemDecoration(horizontalDivider);
     }
     private void setEmptyDataObserver() {
         EmptyStatisticDataObserver emptyDataObserver =
-                new EmptyStatisticDataObserver(binding.recyclerView, binding.emptyData.getRoot());
-        Objects.requireNonNull(binding.recyclerView.getAdapter()).registerAdapterDataObserver(emptyDataObserver);
+                new EmptyStatisticDataObserver(binding.recyclerview, binding.emptydata.getRoot());
+        Objects.requireNonNull(binding.recyclerview.getAdapter()).registerAdapterDataObserver(emptyDataObserver);
     }
     private void setLayoutManager() {
         GridLayoutManager layoutManager;
@@ -107,18 +107,18 @@ public class StatisticFragment extends Fragment implements Contract.View {
         } else {
             layoutManager = new GridLayoutManager(getContext(), 3);
         }
-        binding.recyclerView.setLayoutManager(layoutManager);
+        binding.recyclerview.setLayoutManager(layoutManager);
     }
     private void setAdapter() {
         DayStatistic currentDayStatistic = presenter.getDayStatistic();
         List<Pair<Integer, Integer>> stats;
         if (currentDayStatistic == null) {
             stats = new ArrayList<>();
-            binding.textViewDate.setText(LocalDate.now().toString());
+            binding.tvDate.setText(LocalDate.now().toString());
         } else {
-            binding.textViewDate.setText(currentDayStatistic.getDate());
+            binding.tvDate.setText(currentDayStatistic.getDate());
             stats = currentDayStatistic.getStatistic();
         }
-        binding.recyclerView.setAdapter(new StatisticAdapter(stats));
+        binding.recyclerview.setAdapter(new StatisticAdapter(stats));
     }
 }
