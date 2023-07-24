@@ -19,7 +19,7 @@ import okhttp3.ResponseBody;
 
 public class Client {
 
-    private final OkHttpClient httpClient = new OkHttpClient();
+    private static final OkHttpClient httpClient = new OkHttpClient();
     private static final String URL = "https://russianwarship.rip/api/v2";
 
     public List<DayStatistic> getStatisticsFromDate(String date) throws IOException, JSONException {
