@@ -10,14 +10,20 @@ import com.fivesysdev.standwithukraine.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    private StatisticFragment statisticFragment;
+
     private static final String STATISTIC_FRAGMENT_TAG = "STATISTIC_FRAGMENT_TAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        statisticFragment = (StatisticFragment) getSupportFragmentManager().findFragmentByTag(STATISTIC_FRAGMENT_TAG);
+        openStatisticFragment();
+        setContentView(binding.getRoot());
+    }
+
+    private void openStatisticFragment() {
+        StatisticFragment statisticFragment = (StatisticFragment)
+                getSupportFragmentManager().findFragmentByTag(STATISTIC_FRAGMENT_TAG);
         if (statisticFragment == null) {
             statisticFragment = new StatisticFragment();
         }
@@ -25,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.fcv, statisticFragment, STATISTIC_FRAGMENT_TAG)
                 .commit();
-        setContentView(binding.getRoot());
     }
 
 }
