@@ -7,10 +7,9 @@ import java.util.concurrent.FutureTask
 
 class DayStatisticRepositoryImpl : DayStatisticRepository {
     private var statistics: MutableList<DayStatistic> = ArrayList()
-    var fromDate: LocalDate
+    var fromDate: LocalDate = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth())
 
     init {
-        fromDate = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth())
         updateStatistics()
     }
 

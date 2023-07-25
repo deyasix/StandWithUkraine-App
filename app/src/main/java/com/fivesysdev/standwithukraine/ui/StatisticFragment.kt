@@ -7,27 +7,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.OrientationHelper
 import com.fivesysdev.standwithukraine.R
 import com.fivesysdev.standwithukraine.data.DayStatistic
 import com.fivesysdev.standwithukraine.databinding.FragmentStatisticBinding
-import com.fivesysdev.standwithukraine.mvp.Contract
-import com.fivesysdev.standwithukraine.mvp.Contract.Presenter
-import com.fivesysdev.standwithukraine.mvp.StatisticModel
-import com.fivesysdev.standwithukraine.mvp.StatisticPresenter
 import java.time.LocalDate
 import java.util.Objects
 
-class StatisticFragment : Fragment(R.layout.fragment_statistic), Contract.View {
+class StatisticFragment : Fragment(R.layout.fragment_statistic) {
 
     private var _binding: FragmentStatisticBinding? = null
     private val binding get() = requireNotNull(_binding)
-
-    private val presenter: Presenter by lazy {
-        StatisticPresenter(this, StatisticModel())
-    }
+    private val viewModel: StatisticViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,9 +29,6 @@ class StatisticFragment : Fragment(R.layout.fragment_statistic), Contract.View {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentStatisticBinding.inflate(layoutInflater)
-        if (savedInstanceState != null) {
-            presenter.setDate(savedInstanceState.getString("date"))
-        }
         return binding.root
     }
 
@@ -45,17 +36,19 @@ class StatisticFragment : Fragment(R.layout.fragment_statistic), Contract.View {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
         setRecyclerView()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString("date", binding.tvDate.text.toString())
+        setDayStatistic(viewModel.getCurrentDayStatistic())
     }
 
     private fun setListeners() {
         with(binding) {
-            btnPrevious.setOnClickListener { presenter.onPreviousButtonClick() }
-            btnNext.setOnClickListener { presenter.onNextButtonClick() }
+            btnPrevious.setOnClickListener {
+                viewModel.getPrevious()
+                setDayStatistic(viewModel.getCurrentDayStatistic())
+            }
+            btnNext.setOnClickListener {
+                viewModel.getNext()
+                setDayStatistic(viewModel.getCurrentDayStatistic())
+            }
         }
     }
 
@@ -66,16 +59,18 @@ class StatisticFragment : Fragment(R.layout.fragment_statistic), Contract.View {
         setEmptyDataObserver()
     }
 
-    override fun setDayStatistic(dayStatistic: DayStatistic?) {
+    private fun setDayStatistic(dayStatistic: DayStatistic?) {
+        checkBlockNextButton()
         if (dayStatistic != null) {
-            binding.tvDate.text = dayStatistic.date
             binding.recyclerview.adapter = StatisticAdapter(dayStatistic.statistic)
-        } else binding.tvDate.text = LocalDate.now().toString()
+        }
+        binding.tvDate.text = viewModel.date.toString()
         setEmptyDataObserver()
     }
 
-    override fun blockingNextButton(isBlocked: Boolean) {
-        binding.btnNext.isEnabled = !isBlocked
+    private fun checkBlockNextButton() {
+        val isBlocked = viewModel.date != LocalDate.now()
+        binding.btnNext.isEnabled = isBlocked
     }
 
     private fun setRecyclerDividers() {
@@ -112,15 +107,8 @@ class StatisticFragment : Fragment(R.layout.fragment_statistic), Contract.View {
     }
 
     private fun setAdapter() {
-        val currentDayStatistic = presenter.getDayStatistic()
-        val stats: List<Pair<Int, Int>>
-        if (currentDayStatistic == null) {
-            stats = ArrayList()
-            binding.tvDate.text = LocalDate.now().toString()
-        } else {
-            binding.tvDate.text = currentDayStatistic.date
-            stats = currentDayStatistic.statistic
-        }
+        val currentDayStatistic = viewModel.getCurrentDayStatistic()
+        val stats: List<Pair<Int, Int>> = currentDayStatistic?.statistic ?: ArrayList()
         binding.recyclerview.adapter = StatisticAdapter(stats)
     }
 }
