@@ -12,18 +12,19 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
-public final class StatisticRepository implements Repository<DayStatistic>{
+public final class DayStatisticRepository implements Repository<DayStatistic>{
 
     List<DayStatistic> statistics;
     LocalDate fromDate;
 
-    public StatisticRepository() {
+    public DayStatisticRepository() {
         statistics = new ArrayList<>();
         fromDate = LocalDate.now().with(firstDayOfMonth());
-        getStatistics();
+        updateStatistics();
     }
 
-    private void getStatistics() {
+    @Override
+    public void updateStatistics() {
         Callable<List<DayStatistic>> task = () -> {
             Client client = new Client();
             try {
@@ -42,20 +43,10 @@ public final class StatisticRepository implements Repository<DayStatistic>{
     }
 
     @Override
-    public void add(DayStatistic dayStatistic) {
-        statistics.add(dayStatistic);
-    }
-
-    @Override
-    public List<DayStatistic> getAll() {
-        return statistics;
-    }
-
-    @Override
     public DayStatistic findByDate(String date) {
         if (LocalDate.parse(date).isBefore(fromDate)) {
             fromDate = fromDate.minusMonths(1);
-            getStatistics();
+            updateStatistics();
         }
         for (DayStatistic statistic: statistics) {
             if (statistic.getDate().equals(date)) {
@@ -65,12 +56,12 @@ public final class StatisticRepository implements Repository<DayStatistic>{
         return null;
     }
 
-    private void addAll(List<DayStatistic> list) {
+    @Override
+    public void addAll(List<DayStatistic> list) {
         for (DayStatistic item: list) {
             if (statistics.stream().noneMatch(element -> element.isEqual(item))) {
                 statistics.add(item);
             }
         }
     }
-
 }

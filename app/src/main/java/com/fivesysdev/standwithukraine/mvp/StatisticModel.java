@@ -2,19 +2,20 @@ package com.fivesysdev.standwithukraine.mvp;
 
 
 import com.fivesysdev.standwithukraine.data.DayStatistic;
-import com.fivesysdev.standwithukraine.data.StatisticRepository;
+import com.fivesysdev.standwithukraine.data.Repository;
+import com.fivesysdev.standwithukraine.data.DayStatisticRepository;
 
 import java.time.LocalDate;
 
 public class StatisticModel implements Contract.Model {
 
-    private final StatisticRepository statisticRepository;
+    private final Repository<DayStatistic> statisticRepository;
     private DayStatistic currentStatistic;
     private LocalDate date;
 
     public StatisticModel() {
         this.date = LocalDate.now();
-        this.statisticRepository = new StatisticRepository();
+        this.statisticRepository = new DayStatisticRepository();
         setCurrentStatistic();
     }
 
