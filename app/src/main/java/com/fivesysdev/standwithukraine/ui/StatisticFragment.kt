@@ -1,6 +1,9 @@
 package com.fivesysdev.standwithukraine.ui
 
+import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
 import android.content.res.Configuration
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +17,7 @@ import com.fivesysdev.standwithukraine.R
 import com.fivesysdev.standwithukraine.data.DayStatistic
 import com.fivesysdev.standwithukraine.databinding.FragmentStatisticBinding
 import java.time.LocalDate
+import java.time.ZoneId
 import java.util.Objects
 
 class StatisticFragment : Fragment(R.layout.fragment_statistic) {
@@ -37,7 +41,6 @@ class StatisticFragment : Fragment(R.layout.fragment_statistic) {
         setRecyclerView()
         setDayStatistic(viewModel.getCurrentDayStatistic())
     }
-
     private fun setListeners() {
         with(binding) {
             btnPrevious.setOnClickListener {
@@ -48,7 +51,30 @@ class StatisticFragment : Fragment(R.layout.fragment_statistic) {
                 viewModel.getNext()
                 setDayStatistic(viewModel.getCurrentDayStatistic())
             }
+            tvDate.setOnClickListener {
+                showCalendar()
+            }
         }
+    }
+
+    private fun showCalendar() {
+        val calendar: Calendar = Calendar.getInstance()
+        val date = OnDateSetListener { _, year, month, day ->
+            calendar[Calendar.YEAR] = year
+            calendar[Calendar.MONTH] = month
+            calendar[Calendar.DAY_OF_MONTH] = day
+            updateDate(calendar)
+        }
+        DatePickerDialog(
+            requireContext(), R.style.MaterialCalendarCustomStyle, date,
+            viewModel.date.year,
+            viewModel.date.monthValue - 1, viewModel.date.dayOfMonth
+        ).show()
+    }
+    private fun updateDate(calendar: Calendar) {
+        val date : LocalDate = calendar.time.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+        viewModel.getStatisticByDate(date.toString())
+        setDayStatistic(viewModel.getCurrentDayStatistic())
     }
 
     private fun setRecyclerView() {

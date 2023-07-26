@@ -39,6 +39,7 @@
         android:textSize="@dimen/textsize_activity_main_title"
         android:fontFamily="@font/mitr_regular"
         android:gravity="center"
+        android:textColor="@color/black"
         />
     <LinearLayout
         android:id="@+id/ll_date_selector"
@@ -55,12 +56,15 @@
             android:text="@string/activity_main_date_selector_label"
             android:padding="@dimen/padding_activity_main_text"
             android:fontFamily="@font/mitr_regular"
+            android:textColor="@color/black"
             />
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_previous"
             android:layout_width="@dimen/width_activity_main_button"
             android:layout_height="wrap_content"
             android:background="@color/white"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/button_text_color"
             android:text="@string/activity_main_symbol_back"
             />
         <TextView
@@ -68,13 +72,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/padding_activity_main_text"
+            android:layout_margin="@dimen/padding_activity_main_text"
+            android:background="@color/white"
             android:fontFamily="@font/mitr_regular"
+            android:textColor="@color/black"
             />
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_next"
             android:layout_width="@dimen/width_activity_main_button"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
             android:background="@color/white"
+            android:textColor="@color/button_text_color"
             android:text="@string/activity_main_symbol_next"/>
     </LinearLayout>
 

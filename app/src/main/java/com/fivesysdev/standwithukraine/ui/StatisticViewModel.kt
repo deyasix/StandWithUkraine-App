@@ -26,6 +26,11 @@ class StatisticViewModel : ViewModel() {
         setDayStatistic()
     }
 
+    fun getStatisticByDate(newDate: String) {
+        date = LocalDate.parse(newDate)
+        setDayStatistic()
+    }
+
     fun getNext() {
         date = date.plusDays(1)
         setDayStatistic()
