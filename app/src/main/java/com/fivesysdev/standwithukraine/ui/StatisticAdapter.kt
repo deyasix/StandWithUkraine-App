@@ -1,6 +1,5 @@
 package com.fivesysdev.standwithukraine.ui
 
-import android.util.Pair
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView

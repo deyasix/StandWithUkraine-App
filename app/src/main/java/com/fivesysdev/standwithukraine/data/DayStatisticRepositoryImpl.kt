@@ -7,7 +7,7 @@ import java.util.concurrent.FutureTask
 
 class DayStatisticRepositoryImpl : DayStatisticRepository {
     private var statistics: MutableList<DayStatistic> = ArrayList()
-    var fromDate: LocalDate = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth())
+    private var fromDate: LocalDate = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth())
 
     init {
         updateStatistics()
@@ -15,8 +15,7 @@ class DayStatisticRepositoryImpl : DayStatisticRepository {
 
     private fun updateStatistics() {
         val task = Callable {
-            val client = Client()
-            return@Callable client.getStatisticsFromDate(fromDate.toString())
+            return@Callable StatisticService().getStatisticFromDate(fromDate.toString())
         }
         val future = FutureTask(task)
         Thread(future).start()

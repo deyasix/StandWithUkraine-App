@@ -2,7 +2,6 @@ package com.fivesysdev.standwithukraine.ui
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,7 +61,7 @@ class StatisticFragment : Fragment(R.layout.fragment_statistic) {
     private fun setDayStatistic(dayStatistic: DayStatistic?) {
         checkBlockNextButton()
         if (dayStatistic != null) {
-            binding.recyclerview.adapter = StatisticAdapter(dayStatistic.statistic)
+            binding.recyclerview.adapter = StatisticAdapter(dayStatistic.getStatisticsPair())
         }
         binding.tvDate.text = viewModel.date.toString()
         setEmptyDataObserver()
@@ -108,7 +107,7 @@ class StatisticFragment : Fragment(R.layout.fragment_statistic) {
 
     private fun setAdapter() {
         val currentDayStatistic = viewModel.getCurrentDayStatistic()
-        val stats: List<Pair<Int, Int>> = currentDayStatistic?.statistic ?: ArrayList()
+        val stats: List<Pair<Int, Int>> = currentDayStatistic?.getStatisticsPair() ?: ArrayList()
         binding.recyclerview.adapter = StatisticAdapter(stats)
     }
 }
