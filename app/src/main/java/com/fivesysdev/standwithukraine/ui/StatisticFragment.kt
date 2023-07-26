@@ -36,18 +36,18 @@ class StatisticFragment : Fragment(R.layout.fragment_statistic) {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
         setRecyclerView()
-        setDayStatistic(viewModel.getCurrentDayStatistic())
+        viewModel.dayStatistic.observe(viewLifecycleOwner) {
+            setDayStatistic(it)
+        }
     }
 
     private fun setListeners() {
         with(binding) {
             btnPrevious.setOnClickListener {
                 viewModel.getPrevious()
-                setDayStatistic(viewModel.getCurrentDayStatistic())
             }
             btnNext.setOnClickListener {
                 viewModel.getNext()
-                setDayStatistic(viewModel.getCurrentDayStatistic())
             }
         }
     }
@@ -107,7 +107,7 @@ class StatisticFragment : Fragment(R.layout.fragment_statistic) {
     }
 
     private fun setAdapter() {
-        val currentDayStatistic = viewModel.getCurrentDayStatistic()
+        val currentDayStatistic = viewModel.dayStatistic.value
         val stats: List<Pair<Int, Int>> = currentDayStatistic?.statistic ?: ArrayList()
         binding.recyclerview.adapter = StatisticAdapter(stats)
     }

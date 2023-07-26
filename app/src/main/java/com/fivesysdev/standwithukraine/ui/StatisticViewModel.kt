@@ -1,5 +1,6 @@
 package com.fivesysdev.standwithukraine.ui
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fivesysdev.standwithukraine.data.DayStatistic
@@ -8,17 +9,16 @@ import java.time.LocalDate
 
 class StatisticViewModel : ViewModel() {
 
-    private val dayStatistic = MutableLiveData<DayStatistic>()
+    private val _dayStatistic = MutableLiveData<DayStatistic?>()
     private val dayStatisticRepository = DayStatisticRepositoryImpl()
+    val dayStatistic: LiveData<DayStatistic?>
+        get() = _dayStatistic
+
     var date: LocalDate = LocalDate.now()
         private set
 
     init {
         setDayStatistic()
-    }
-
-    fun getCurrentDayStatistic(): DayStatistic? {
-        return dayStatistic.value
     }
 
     fun getPrevious() {
@@ -32,7 +32,7 @@ class StatisticViewModel : ViewModel() {
     }
 
     private fun setDayStatistic() {
-        dayStatistic.value = dayStatisticRepository.getStatisticByDate(date.toString())
+        _dayStatistic.value = dayStatisticRepository.getStatisticByDate(date.toString())
     }
 
 }
