@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -107,6 +108,8 @@ class StatisticFragment : Fragment(R.layout.fragment_statistic) {
             requireContext(),
             OrientationHelper.HORIZONTAL
         )
+        getDrawable(requireContext(), R.drawable.divider)?.let { horizontalDivider.setDrawable(it) }
+        getDrawable(requireContext(), R.drawable.divider)?.let { verticalDivider.setDrawable(it) }
         with(binding.recyclerview) {
             addItemDecoration(verticalDivider)
             addItemDecoration(horizontalDivider)
