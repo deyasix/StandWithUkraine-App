@@ -6,8 +6,8 @@ class StatisticService {
     private val retrofit = RetrofitClient.getClient()
     private val statisticAPI = retrofit.create(APIService::class.java)
 
-    fun getStatisticFromDate(fromDate: String): List<DayStatistic> {
-        val response = statisticAPI.getStatisticFromDate(fromDate).execute()
+    suspend fun getStatisticFromDate(fromDate: String): List<DayStatistic> {
+        val response = statisticAPI.getStatisticFromDate(fromDate)
         val statistics = mutableListOf<DayStatistic>()
         if (response.isSuccessful) {
             val body: Data? = response.body()?.data

@@ -21,6 +21,7 @@ class StatisticFragment : Fragment(R.layout.fragment_statistic) {
     private var _binding: FragmentStatisticBinding? = null
     private val binding get() = requireNotNull(_binding)
     private val viewModel: StatisticViewModel by viewModels()
+    private val data = mutableListOf<Pair<Int, Int>>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,18 +36,27 @@ class StatisticFragment : Fragment(R.layout.fragment_statistic) {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
         setRecyclerView()
-        setDayStatistic(viewModel.getCurrentDayStatistic())
+        observeState()
+    }
+
+    private fun observeState() {
+        viewModel.loading.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.emptydata.root.visibility = View.GONE
+            }
+        }
+        viewModel.dayStatistic.observe(viewLifecycleOwner) {
+            setDayStatistic(it)
+        }
     }
 
     private fun setListeners() {
         with(binding) {
             btnPrevious.setOnClickListener {
                 viewModel.getPrevious()
-                setDayStatistic(viewModel.getCurrentDayStatistic())
             }
             btnNext.setOnClickListener {
                 viewModel.getNext()
-                setDayStatistic(viewModel.getCurrentDayStatistic())
             }
         }
     }
@@ -60,11 +70,14 @@ class StatisticFragment : Fragment(R.layout.fragment_statistic) {
 
     private fun setDayStatistic(dayStatistic: DayStatistic?) {
         checkBlockNextButton()
-        if (dayStatistic != null) {
-            binding.recyclerview.adapter = StatisticAdapter(dayStatistic.getStatisticsPair())
-        }
+        updateDataList(dayStatistic)
         binding.tvDate.text = viewModel.date.toString()
-        setEmptyDataObserver()
+    }
+
+    private fun updateDataList(dayStatistic: DayStatistic?) {
+        data.clear()
+        data.addAll(dayStatistic?.getStatisticsPair()?:listOf())
+        binding.recyclerview.adapter?.notifyItemRangeChanged(0, data.size)
     }
 
     private fun checkBlockNextButton() {
@@ -106,8 +119,9 @@ class StatisticFragment : Fragment(R.layout.fragment_statistic) {
     }
 
     private fun setAdapter() {
-        val currentDayStatistic = viewModel.getCurrentDayStatistic()
-        val stats: List<Pair<Int, Int>> = currentDayStatistic?.getStatisticsPair() ?: ArrayList()
-        binding.recyclerview.adapter = StatisticAdapter(stats)
+        val currentDayStatistic = viewModel.dayStatistic.value
+        data.clear()
+        data.addAll(currentDayStatistic?.getStatisticsPair() ?: listOf())
+        binding.recyclerview.adapter = StatisticAdapter(data)
     }
 }

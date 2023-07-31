@@ -25,8 +25,9 @@ class EmptyStatisticDataObserver(
         }
     }
 
-    override fun onChanged() {
-        super.onChanged()
+    override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
+        super.onItemRangeChanged(positionStart, itemCount)
         checkIfEmpty()
     }
+
 }
