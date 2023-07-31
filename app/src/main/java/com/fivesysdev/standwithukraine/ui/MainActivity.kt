@@ -18,12 +18,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openStatisticFragment() {
-        val statisticFragment = (supportFragmentManager.findFragmentByTag(STATISTIC_FRAGMENT_TAG)
-                as StatisticFragment?)?: StatisticFragment()
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fcv, statisticFragment, STATISTIC_FRAGMENT_TAG)
-            .commit()
+        val statisticFragment =
+            (supportFragmentManager.findFragmentByTag(STATISTIC_FRAGMENT_TAG) as StatisticFragment?)
+                ?: StatisticFragment()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fcv, statisticFragment, STATISTIC_FRAGMENT_TAG).commit()
     }
 
     companion object {

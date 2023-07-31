@@ -4,9 +4,7 @@ import com.fivesysdev.standwithukraine.data.model.Increase
 import com.fivesysdev.standwithukraine.data.model.Stats
 
 data class DayStatistic(
-    val date: String,
-    val statistics: Stats,
-    val increase: Increase
+    val date: String, val statistics: Stats, val increase: Increase
 ) {
     fun getStatisticsPair(): List<Pair<Int, Int>> {
         val list = mutableListOf<Pair<Int, Int>>()

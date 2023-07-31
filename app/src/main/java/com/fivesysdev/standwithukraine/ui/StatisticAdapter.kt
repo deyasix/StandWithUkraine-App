@@ -6,13 +6,24 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.fivesysdev.standwithukraine.databinding.StatisticItemBinding
 
-class StatisticAdapter(private val quantities: List<Pair<Int, Int>>) :
+class StatisticAdapter(private val quantities: List<Pair<Int, Int>>?) :
     RecyclerView.Adapter<StatisticAdapter.ViewHolder>() {
 
     private val names = listOf(
-        "personnel units", "tanks", "AFV", "artillery systems", "MLRS", "AA warfare systems",
-        "planes", "helicopters", "vehicles and fuel tanks", "warships/cutters", "cruise missiles",
-        "UAV systems", "special military equip", "ATGM/SRBM systems"
+        "personnel units",
+        "tanks",
+        "AFV",
+        "artillery systems",
+        "MLRS",
+        "AA warfare systems",
+        "planes",
+        "helicopters",
+        "vehicles and fuel tanks",
+        "warships/cutters",
+        "cruise missiles",
+        "UAV systems",
+        "special military equip",
+        "ATGM/SRBM systems"
     )
 
     class ViewHolder(binding: StatisticItemBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -32,14 +43,14 @@ class StatisticAdapter(private val quantities: List<Pair<Int, Int>>) :
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        val item = quantities[position]
-        val text = item.first.toString() + " (+" + item.second + ")"
+        val item = quantities?.get(position)
+        val text = item?.first.toString() + " (+" + item?.second.toString() + ")"
         val name = names[position] + ": "
         viewHolder.textViewQuantity.text = text
         viewHolder.textViewName.text = name
     }
 
     override fun getItemCount(): Int {
-        return quantities.size
+        return quantities?.size ?: 0
     }
 }

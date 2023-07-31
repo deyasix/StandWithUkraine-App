@@ -3,10 +3,10 @@ package com.fivesysdev.standwithukraine.ui
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
+import com.fivesysdev.standwithukraine.data.ext.setVisibility
 
 class EmptyStatisticDataObserver(
-    private val recyclerView: RecyclerView,
-    private val emptyView: View?
+    private val recyclerView: RecyclerView, private val emptyView: View?
 ) : AdapterDataObserver() {
     init {
         checkIfEmpty()
@@ -15,13 +15,8 @@ class EmptyStatisticDataObserver(
     private fun checkIfEmpty() {
         if (emptyView != null && recyclerView.adapter != null) {
             val emptyViewVisible = recyclerView.adapter?.itemCount == 0
-            if (emptyViewVisible) {
-                emptyView.visibility = View.VISIBLE
-                recyclerView.visibility = View.GONE
-            } else {
-                emptyView.visibility = View.GONE
-                recyclerView.visibility = View.VISIBLE
-            }
+            emptyView.setVisibility(emptyViewVisible)
+            recyclerView.setVisibility(!emptyViewVisible)
         }
     }
 

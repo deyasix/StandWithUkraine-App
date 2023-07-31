@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_gradient"
+    android:background="?background"
     tools:context=".ui.MainActivity">
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_left"
@@ -39,6 +39,7 @@
         android:textSize="@dimen/textsize_activity_main_title"
         android:fontFamily="@font/mitr_regular"
         android:gravity="center"
+        android:textColor="?colorSecondary"
         />
     <LinearLayout
         android:id="@+id/ll_date_selector"
@@ -55,26 +56,33 @@
             android:text="@string/activity_main_date_selector_label"
             android:padding="@dimen/padding_activity_main_text"
             android:fontFamily="@font/mitr_regular"
+            android:textColor="?colorSecondary"
             />
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_previous"
             android:layout_width="@dimen/width_activity_main_button"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:backgroundTint="?colorPrimary"
             android:text="@string/activity_main_symbol_back"
+            android:textColor="@color/button_text_color"
             />
         <TextView
             android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_activity_main_text"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="@dimen/padding_activity_main_text"
+            android:layout_margin="@dimen/padding_activity_main_text"
+            android:background="?colorPrimary"
             android:fontFamily="@font/mitr_regular"
+            android:textColor="?colorSecondary"
             />
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_next"
             android:layout_width="@dimen/width_activity_main_button"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:backgroundTint="?colorPrimary"
+            android:textColor="@color/button_text_color"
             android:text="@string/activity_main_symbol_next"/>
     </LinearLayout>
 

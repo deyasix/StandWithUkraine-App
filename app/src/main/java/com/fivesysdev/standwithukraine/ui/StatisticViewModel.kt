@@ -14,13 +14,13 @@ class StatisticViewModel : ViewModel() {
     private val _dayStatistic = MutableLiveData<DayStatistic?>()
     private val dayStatisticRepository = DayStatisticRepositoryImpl()
     private val _loading = MutableLiveData(true)
+    val calendarDate = MutableLiveData<LocalDate?>()
     val dayStatistic: LiveData<DayStatistic?>
         get() = _dayStatistic
     val loading: LiveData<Boolean>
         get() = _loading
     var date: LocalDate = LocalDate.now()
         private set
-
 
     init {
         setDayStatistic()
@@ -36,6 +36,11 @@ class StatisticViewModel : ViewModel() {
         setDayStatistic()
     }
 
+    fun getStatisticByDate(newDate: String) {
+        date = LocalDate.parse(newDate)
+        setDayStatistic()
+    }
+
     private fun setDayStatistic() {
         viewModelScope.launch {
             val value = dayStatisticRepository.getStatisticByDate(date.toString())
@@ -43,5 +48,4 @@ class StatisticViewModel : ViewModel() {
             _loading.value = false
         }
     }
-
 }
