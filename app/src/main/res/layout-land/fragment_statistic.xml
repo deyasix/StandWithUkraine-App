@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="?colorPrimary"
             android:text="@string/activity_main_symbol_back"
-            android:textColor="?colorSecondary"
+            android:textColor="@color/button_text_color"
             />
         <TextView
             android:id="@+id/tv_date"
@@ -82,7 +82,7 @@
             android:layout_width="@dimen/width_activity_main_button"
             android:layout_height="wrap_content"
             android:backgroundTint="?colorPrimary"
-            android:textColor="?colorSecondary"
+            android:textColor="@color/button_text_color"
             android:text="@string/activity_main_symbol_next"/>
     </LinearLayout>
 

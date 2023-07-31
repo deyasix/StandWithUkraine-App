@@ -23,10 +23,21 @@ class DayStatisticRepositoryImpl : DayStatisticRepository {
     }
 
     override fun getStatisticByDate(date: String?): DayStatistic? {
-        if (LocalDate.parse(date).isBefore(fromDate)) {
-            fromDate = fromDate.minusMonths(1)
+        val selectedDate = LocalDate.parse(date)
+        if (selectedDate.isBefore(fromDate)) {
+            fromDate = fromDate.minusMonths((fromDate.month - selectedDate.month.value.toLong()).value.toLong())
             updateStatistics()
         }
+        var statistic = findStatistic(date)
+        if (statistic == null) {
+            fromDate = selectedDate
+            updateStatistics()
+            statistic = findStatistic(date)
+        }
+        return statistic
+    }
+
+    private fun findStatistic(date: String?) : DayStatistic? {
         for (statistic in statistics) {
             if (statistic.date == date) {
                 return statistic

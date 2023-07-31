@@ -41,7 +41,15 @@ class StatisticFragment : Fragment(R.layout.fragment_statistic) {
         setListeners()
         setRecyclerView()
         setDayStatistic(viewModel.getCurrentDayStatistic())
+        setCalendar()
     }
+
+    private fun setCalendar() {
+        if (viewModel.calendarDate.value != null) {
+            showCalendar()
+        }
+    }
+
     private fun setListeners() {
         with(binding) {
             btnPrevious.setOnClickListener {
@@ -60,21 +68,51 @@ class StatisticFragment : Fragment(R.layout.fragment_statistic) {
 
     private fun showCalendar() {
         val calendar: Calendar = Calendar.getInstance()
-        val date = OnDateSetListener { _, year, month, day ->
+        val onDateChange = OnDateSetListener { _, year, month, day ->
             calendar[Calendar.YEAR] = year
             calendar[Calendar.MONTH] = month
             calendar[Calendar.DAY_OF_MONTH] = day
             updateDate(calendar)
         }
-        DatePickerDialog(
-            requireContext(), R.style.MaterialCalendarCustomStyle, date,
-            viewModel.date.year,
-            viewModel.date.monthValue - 1, viewModel.date.dayOfMonth
-        ).show()
+        with(viewModel) {
+            val datePickerDialog = DatePickerDialog(
+                requireContext(),
+                R.style.MaterialCalendarCustomStyle,
+                onDateChange,
+                calendarDate.value?.year ?: date.year,
+                (calendarDate.value?.monthValue ?: date.monthValue) - 1,
+                calendarDate.value?.dayOfMonth ?: date.dayOfMonth
+            )
+            setDatePicker(datePickerDialog, calendar)
+        }
     }
+
+    private fun setDatePicker(datePickerDialog : DatePickerDialog, calendar: Calendar) {
+        with (datePickerDialog) {
+            datePicker.setOnDateChangedListener { _, year, month, day ->
+                viewModel.calendarDate.value = LocalDate.of(year, month + 1, day)
+            }
+            datePicker.minDate = getMinDate()
+            datePicker.maxDate = calendar.timeInMillis
+            setOnCancelListener {
+                viewModel.calendarDate.value = null
+            }
+            show()
+        }
+    }
+
+    private fun getMinDate() : Long {
+        val minDateCalendar = Calendar.getInstance()
+        minDateCalendar[Calendar.MONTH] = MIN_MONTH - 1
+        minDateCalendar[Calendar.YEAR] = MIN_YEAR
+        minDateCalendar[Calendar.DAY_OF_MONTH] = MIN_DAY
+        return minDateCalendar.timeInMillis
+    }
+
     private fun updateDate(calendar: Calendar) {
-        val date : LocalDate = calendar.time.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+        val date: LocalDate = calendar.time.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
         viewModel.getStatisticByDate(date.toString())
+        viewModel.calendarDate.value = null
         setDayStatistic(viewModel.getCurrentDayStatistic())
     }
 
@@ -86,17 +124,17 @@ class StatisticFragment : Fragment(R.layout.fragment_statistic) {
     }
 
     private fun setDayStatistic(dayStatistic: DayStatistic?) {
-        checkBlockNextButton()
-        if (dayStatistic != null) {
-            binding.recyclerview.adapter = StatisticAdapter(dayStatistic.getStatisticsPair())
-        }
+        checkBlockButtons()
+        binding.recyclerview.adapter = StatisticAdapter(dayStatistic?.getStatisticsPair())
         binding.tvDate.text = viewModel.date.toString()
         setEmptyDataObserver()
     }
 
-    private fun checkBlockNextButton() {
-        val isBlocked = viewModel.date != LocalDate.now()
-        binding.btnNext.isEnabled = isBlocked
+    private fun checkBlockButtons() {
+        val isNextBlocked = viewModel.date != LocalDate.now()
+        val isPrevBlocked = viewModel.date != LocalDate.of(MIN_YEAR, MIN_MONTH, MIN_DAY)
+        binding.btnPrevious.isEnabled = isPrevBlocked
+        binding.btnNext.isEnabled = isNextBlocked
     }
 
     private fun setRecyclerDividers() {
@@ -108,8 +146,10 @@ class StatisticFragment : Fragment(R.layout.fragment_statistic) {
             requireContext(),
             OrientationHelper.HORIZONTAL
         )
-        getDrawable(requireContext(), R.drawable.divider)?.let { horizontalDivider.setDrawable(it) }
-        getDrawable(requireContext(), R.drawable.divider)?.let { verticalDivider.setDrawable(it) }
+        getDrawable(requireContext(), R.drawable.divider)?.let {
+            horizontalDivider.setDrawable(it)
+            verticalDivider.setDrawable(it)
+        }
         with(binding.recyclerview) {
             addItemDecoration(verticalDivider)
             addItemDecoration(horizontalDivider)
@@ -138,5 +178,11 @@ class StatisticFragment : Fragment(R.layout.fragment_statistic) {
         val currentDayStatistic = viewModel.getCurrentDayStatistic()
         val stats: List<Pair<Int, Int>> = currentDayStatistic?.getStatisticsPair() ?: ArrayList()
         binding.recyclerview.adapter = StatisticAdapter(stats)
+    }
+
+    companion object {
+        const val MIN_DAY = 27
+        const val MIN_YEAR = 2022
+        const val MIN_MONTH = 2
     }
 }

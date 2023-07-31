@@ -10,6 +10,7 @@ class StatisticViewModel : ViewModel() {
 
     private val dayStatistic = MutableLiveData<DayStatistic>()
     private val dayStatisticRepository = DayStatisticRepositoryImpl()
+    val calendarDate = MutableLiveData<LocalDate?>()
     var date: LocalDate = LocalDate.now()
         private set
 
